@@ -3,7 +3,9 @@ import { Book, CreateCommand, UpdateCommand } from "../domain/domain";
 import { Repository } from "../domain/repository";
 
 export class ProductionRepository extends Repository {
-  private collection = db.collection("books");
+  private collection = db.collection(
+    process.env.FIREBASE_BOOK_COLLECTION as string
+  );
   async getById(id: string): Promise<Book | undefined> {
     const bookRef = await this.collection.doc(id).get();
     if (bookRef) {
