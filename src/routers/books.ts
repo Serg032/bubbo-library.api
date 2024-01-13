@@ -8,6 +8,7 @@ import { Handler as UpdateHandler } from "../books/app/commands/update/handler";
 import { Handler as DeleteHandler } from "../books/app/commands/delete/handler";
 import { ProductionRepository } from "../books/infrastructure/production-repository";
 import { CreateCommand, UpdateCommand } from "../books/domain/domain";
+import { z } from "zod";
 
 const router = Router();
 const repository = new ProductionRepository();
@@ -42,8 +43,10 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
+  const idSchema = z.string();
+  const parsedId = idSchema.parse(req.params.id);
   try {
-    const book = await queryByIdHandler.handle(req.params.id);
+    const book = await queryByIdHandler.handle(parsedId);
     if (book) {
       res.send({
         book,
@@ -59,8 +62,15 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const body = req.body as CreateCommand;
-    await createHandler.handle({ ...body, id: randomUUID() });
+    const bodySchema = z.object({
+      name: z.string(),
+      author: z.string(),
+      publisher: z.string(),
+      pages: z.number(),
+    });
+
+    const parsedBody = bodySchema.parse(req.body);
+    await createHandler.handle({ ...parsedBody, id: randomUUID() });
     res.send({ message: "Book created", statusCode: 201 });
   } catch (error) {
     res.status(500).json({ message: "Error creating the book", error: error });
@@ -69,15 +79,22 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-    const body = req.body;
+    const idSchema = z.string();
+    const bodySchema = z.object({
+      name: z.string().optional(),
+      author: z.string().optional(),
+      publisher: z.string().optional(),
+      pages: z.number().optional(),
+    });
+    const parsedId = idSchema.parse(req.params.id);
+    const parsedBody = bodySchema.parse(req.body);
     const command: UpdateCommand = {
-      name: body.name,
-      author: body.author,
-      publisher: body.publisher,
-      pages: body.pages,
+      name: parsedBody.name,
+      author: parsedBody.author,
+      publisher: parsedBody.publisher,
+      pages: parsedBody.pages,
     };
-    const bookFromDatabase = await queryByIdHandler.handle(id);
+    const bookFromDatabase = await queryByIdHandler.handle(parsedId);
     if (bookFromDatabase) {
       await updateHandler.handle(
         {
@@ -104,7 +121,8 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", (req, res) => {
   try {
-    deleteHandler.handle(req.params.id);
+    const idSchema = z.string();
+    deleteHandler.handle(idSchema.parse(req.params.id));
     res.send({ message: "Book deleted", statusCode: 200 });
   } catch (error) {
     res.status(500).json({ message: "Error deleting the book", error: error });
