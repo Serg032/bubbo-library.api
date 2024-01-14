@@ -18,6 +18,7 @@ describe("When asking for all the books", () => {
       author: "first author",
       publisher: "first publisher",
       pages: 100,
+      img: "image url",
     },
     {
       id: randomUUID(),
@@ -25,6 +26,7 @@ describe("When asking for all the books", () => {
       author: "second author",
       publisher: "second publisher",
       pages: 200,
+      img: "image url",
     },
   ];
   before(async () => {

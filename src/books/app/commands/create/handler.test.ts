@@ -16,6 +16,7 @@ describe("When creating a book", () => {
       author: "test author",
       publisher: "test author",
       pages: 100,
+      img: "image url",
     });
     const book = await queryHandler.handle(id);
     assert.equal(book?.id, id);

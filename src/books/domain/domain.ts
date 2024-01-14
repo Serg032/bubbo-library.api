@@ -4,6 +4,7 @@ export interface Book {
   author: string;
   publisher: string;
   pages: number;
+  img: string;
 }
 
 export interface CreateCommand extends Book {}

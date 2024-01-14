@@ -7,7 +7,7 @@ import { Handler as QueryAllHandler } from "../books/app/querys/get-all/handler"
 import { Handler as UpdateHandler } from "../books/app/commands/update/handler";
 import { Handler as DeleteHandler } from "../books/app/commands/delete/handler";
 import { ProductionRepository } from "../books/infrastructure/production-repository";
-import { CreateCommand, UpdateCommand } from "../books/domain/domain";
+import { UpdateCommand } from "../books/domain/domain";
 import { z } from "zod";
 
 const router = Router();
@@ -67,6 +67,7 @@ router.post("/", async (req, res) => {
       author: z.string(),
       publisher: z.string(),
       pages: z.number(),
+      img: z.string(),
     });
 
     const parsedBody = bodySchema.parse(req.body);

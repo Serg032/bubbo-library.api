@@ -17,6 +17,7 @@ describe("When asking for a book", () => {
     author: "test author",
     publisher: "test publisher",
     pages: 111,
+    img: "image url",
   };
   before(async () => {
     await createBookHandle.handle(createHandlerCommand);

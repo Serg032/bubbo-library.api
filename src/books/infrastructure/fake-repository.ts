@@ -19,6 +19,7 @@ export class Fakerepository extends Repository {
       author: command.author,
       publisher: command.publisher,
       pages: command.pages,
+      img: command.img,
     });
   }
 

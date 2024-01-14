@@ -21,6 +21,7 @@ describe("When updating a book", () => {
       author: "book author",
       publisher: "book publisher",
       pages: 100,
+      img: "image url",
     });
   });
   afterEach(async () => {

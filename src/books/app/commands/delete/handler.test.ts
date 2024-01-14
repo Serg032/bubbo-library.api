@@ -17,6 +17,7 @@ describe("When deleting a book", () => {
       author: "test author",
       publisher: "test publisher",
       pages: 100,
+      img: "image url",
     });
   });
   it("should be deleted", async () => {
