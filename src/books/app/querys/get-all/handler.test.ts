@@ -1,6 +1,5 @@
 import { before, describe, it } from "node:test";
 import { Fakerepository } from "../../../infrastructure/fake-repository";
-import { Repository } from "../../../domain/repository";
 import { Handler as CreateHandler } from "../../commands/create/handler";
 import { CreateCommand } from "../../../domain/domain";
 import { randomUUID } from "node:crypto";
