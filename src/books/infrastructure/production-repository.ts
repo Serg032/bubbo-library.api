@@ -23,8 +23,14 @@ export class ProductionRepository extends Repository {
     return booksRef.docs.map((doc) => doc.data() as Book);
   }
   async update(command: UpdateCommand, id: string): Promise<void> {
-    const bookRef = this.collection.doc(id);
-    await bookRef.update(command);
+    try {
+      const bookRef = this.collection.doc(id);
+      console.log("BOOK REF", bookRef);
+      console.log("COMMAND", command);
+      await bookRef.update(command);
+    } catch (error) {
+      console.log(error);
+    }
   }
   async delete(id: string): Promise<void> {
     const bookRef = this.collection.doc(id);

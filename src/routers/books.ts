@@ -32,6 +32,7 @@ const collection = db.collection("books");
 
 // Endpoints
 router.get("/", async (req, res) => {
+  console.log("GET ALL BOOKS");
   try {
     res.send({
       books: await queryAllHandler.handle(),
@@ -62,6 +63,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
+    console.log("Resquest", req.body);
     const bodySchema = z.object({
       name: z.string(),
       author: z.string(),
@@ -95,8 +97,10 @@ router.put("/:id", async (req, res) => {
       publisher: parsedBody.publisher,
       pages: parsedBody.pages,
     };
+
     const bookFromDatabase = await queryByIdHandler.handle(parsedId);
     if (bookFromDatabase) {
+      console.log("COMMAND", command);
       await updateHandler.handle(
         {
           name: command.name ? command.name : bookFromDatabase.name,
